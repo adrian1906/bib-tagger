@@ -20,13 +20,13 @@ def find_bib(image):
   ret,binary = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU);
   #ret,binary = cv2.threshold(blurred, 170, 255, cv2.THRESH_BINARY);
   debug_output("find_bib_binary", binary)
-  threshold_contours,hierarchy = find_contours(binary)
-
+  #threshold_contours,hierarchy = find_contours(binary)
+  threshold_contours = find_contours(binary)[1] # Return the contour part of the tuple
   debug_output("find_bib_threshold", binary)
 
   edges = cv2.Canny(gray,175,200, 3)
-  edge_contours,hierarchy = find_contours(edges)
-
+  #edge_contours,hierarchy = find_contours(edges)
+  edge_contours = find_contours(edges)[1]
   debug_output("find_bib_edges", edges)
 
   contours = threshold_contours + edge_contours
@@ -83,9 +83,16 @@ def find_bibs(image):
   return get_rectangles(contours)
 
 def find_contours(image):
+  #gray=cv2.cvtColor(image,cv2.COLOR_BGR2GRAY) # Hood - Added a line to convert to grayscale first
   #return cv2.findContours(image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE);
   #return cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE);
-  return cv2.findContours(image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE);
+  # findContours returns a tuple of 3 values: 
+  # (https://docs.opencv.org/3.1.0/d4/d73/tutorial_py_contours_begin.html)
+  # OpenCV examplue uses: im2, contours, hierarchy = cv2.findContours(image.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE);
+  # im2: Source Image
+  # contours: contour retrieval mode
+  # hierarchy: contour approximation method.
+  return cv2.findContours(image.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE);
 
 def get_rectangles(contours):
   rectangles = []
@@ -177,8 +184,8 @@ def debug_output(name, img):
         cv2.imwrite(name + '.jpg', img)
 
 if __name__ == "__main__":
-  image_1 = cv2.imread("../photos-out/Frosty5k-1.jpg/subimage0.jpg")
-
+  #image_1 = cv2.imread("../photos-out/Frosty5k-1.jpg/subimage0.jpg")
+  image_1 = cv2.imread("..\\photos-out\\Frosty5k\\1.jpg\\0_0bodyboxes.jpg")
   #sample = cv2.imread("../photos/GloryDays/bib-sample.jpg")
   #orb = cv2.ORB();
 

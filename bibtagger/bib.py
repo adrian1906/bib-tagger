@@ -1,6 +1,7 @@
 import bibtagger.find_bibs as bf
-import bibtagger.bibtagger as bt
-from bt import getSubImage
+#Note: The next line is commented out since it was giving errors
+# Instead it was moved to the calling methods.
+#import bibtagger.bibtagger as bt 
 import cv2
 import numpy as np
 
@@ -18,7 +19,9 @@ class Bib(object):
 
     def body_image(self):
         #return bt.getSubImage(self.image, self.bodybox)
-        return getSubImage(self.image, self.bodybox)
+        import bibtagger.bibtagger as bt
+        return bt.getSubImage(self.image, self.bodybox)
+    
     def body_image_with_bib(self):
         img = np.copy(self.body_image())
         cv2.drawContours(img, [self.corners], -1, (0,0,255), 2)
@@ -30,6 +33,8 @@ class Bib(object):
         return np.array([[(pt[0][0] + x_delta, pt[0][1] + y_delta)] for pt in self.corners])
 
     def smallest_subimage_containing_bib(self):
+        import bibtagger.bibtagger as bt
+        return bt.getSubImage(self.image, self.bodybox)
         if not self.bib_found:
             return self.body_image()
         

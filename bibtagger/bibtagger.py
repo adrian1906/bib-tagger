@@ -2,13 +2,19 @@ import cv2
 import os
 import numpy as np
 import bibtagger.bodydetector as bt
-import bibtagger.find_bibs as bf
+#import bibtagger.find_bibs as bf
 from bibtagger.bib import Bib
 from bibtagger.bibtaggerresult import BibTaggerResult
 
 from bibtagger.swt import SWTScrubber
 import bibtagger.ocr as ocr
 import re
+
+def getSubImage(image,rectangle):
+    #in: image, rectangle(x,y,width,height)
+    #out: subimage
+    (x,y,w,h) = rectangle
+    return image[y:y+h,x:x+w,:]
 
 def findBibs(image,outdir):
 
@@ -101,13 +107,7 @@ def run_swt_and_ocr(image, i, name, writefiles, outdir):
 
     return bib_number
 
-def getSubImage(image,rectangle):
-    #in: image, rectangle(x,y,width,height)
-    #out: subimage
 
-    (x,y,w,h) = rectangle
-
-    return image[y:y+h,x:x+w,:]
 
 def drawboxes(image, boxes, color = (0,255,0)):
 
