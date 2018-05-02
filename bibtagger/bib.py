@@ -1,5 +1,6 @@
-import find_bibs as bf
-import bibtagger as bt
+import bibtagger.find_bibs as bf
+import bibtagger.bibtagger as bt
+from bt import getSubImage
 import cv2
 import numpy as np
 
@@ -16,8 +17,8 @@ class Bib(object):
         return self.number != None and self.number != ''
 
     def body_image(self):
-        return bt.getSubImage(self.image, self.bodybox)
-
+        #return bt.getSubImage(self.image, self.bodybox)
+        return getSubImage(self.image, self.bodybox)
     def body_image_with_bib(self):
         img = np.copy(self.body_image())
         cv2.drawContours(img, [self.corners], -1, (0,0,255), 2)

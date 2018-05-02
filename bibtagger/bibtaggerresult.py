@@ -1,4 +1,4 @@
-import find_bibs as bf
+import bibtagger.find_bibs as bf
 import bibtagger as bt
 import cv2
 import numpy as np
