@@ -79,8 +79,8 @@ class SWTScrubber(object):
         grad_x_g = step_x_g / mag_g
         grad_y_g = step_y_g / mag_g
 
-        for x in xrange(edges.shape[1]):
-            for y in xrange(edges.shape[0]):
+        for x in np.xrange(edges.shape[1]):
+            for y in np.xrange(edges.shape[0]):
                 if edges[y, x] > 0:
                     step_x = step_x_g[y, x]
                     step_y = step_y_g[y, x]
@@ -202,8 +202,8 @@ class SWTScrubber(object):
         next_label = 1
         # First Pass, raster scan-style
         swt_ratio_threshold = 3.0
-        for y in xrange(swt.shape[0]):
-            for x in xrange(swt.shape[1]):
+        for y in np.xrange(swt.shape[0]):
+            for x in np.xrange(swt.shape[1]):
                 sw_point = swt[y, x]
                 if sw_point < np.Infinity and sw_point > 0:
                     neighbors = [(y, x-1),   # west
@@ -242,8 +242,8 @@ class SWTScrubber(object):
         # Second pass. re-base all labeling with representative label for each connected tree
         layers = {}
         contours = defaultdict(list)
-        for x in xrange(swt.shape[1]):
-            for y in xrange(swt.shape[0]):
+        for x in np.xrange(swt.shape[1]):
+            for y in np.xrange(swt.shape[0]):
                 if label_map[y, x] > 0:
                     item = ld[label_map[y, x]]
                     common_label = Find(item).value
