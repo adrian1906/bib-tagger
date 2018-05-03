@@ -4,10 +4,7 @@ import cv2
 
 #from directory.file import class
 from bibtagger.swt import SWTScrubber
-
 class test_swt(unittest.TestCase):
-
-    photodir = ""
 
     #called before every test
     def setUp(self):
@@ -15,13 +12,14 @@ class test_swt(unittest.TestCase):
         self.basedir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
         self.photodir = os.path.join(self.basedir,"photos")
         self.photooutdir = os.path.join(self.basedir, "photos-out")
-        print "setup"
+        print ("setup")
 
     def tearDown(self):
         #self.widget.dispose()
-        print "teardown"
+        print ("teardown")
 
     def test_swt(self):
+        print("Testing SWT()")
         cv2.IMREAD_GRAYSCALE
         image = cv2.imread(os.path.join(self.photodir,"GloryDays","bib-sample.jpg"),cv2.IMREAD_GRAYSCALE)
 

@@ -92,17 +92,27 @@ def findBibs(image,outdir):
 
 
 def run_swt_and_ocr(image, i, name, writefiles, outdir):
+    DETECT_ONLY_FLAG = True # Use untill Tesseract is installed
     bib_number = None
 
     if(writefiles):
         cv2.imwrite(os.path.join(outdir,"{}_2bibimage_{}.jpg".format(i, name)),image)
-
-    SWTbib = SWTScrubber.scrub(image)
+    if DETECT_ONLY_FLAG :    
+        SWTbib = None
+    else:
+        SWTbib = SWTScrubber.scrub(image)
+        
+        
+    
     if(writefiles and SWTbib is not None):
         SWTpath = os.path.join(outdir,"{}_3SWTimage_{}.jpg".format(i, name))
         cv2.imwrite(SWTpath, (255-(255*SWTbib)))
-        bib_number = ocr.getOcr(SWTpath)
-        print (bib_number)
+        if DETECT_ONLY_FLAG:
+            bib_number = 00
+        else:    
+            bib_number = ocr.getOcr(SWTpath)
+            print (bib_number)
+        
         bib_number = re.sub("[^0-9]", "", bib_number)
 
     return bib_number
