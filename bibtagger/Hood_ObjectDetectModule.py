@@ -84,7 +84,7 @@ def train_object_detector(faces_folder,myTraining,myTesting,myDetector,myDetecto
     # file.  But for this example, we just use the training.xml file included with
     # dlib.
     dlib.train_simple_object_detector(training_xml_path, myDetector, options)
-    options.C =3
+    options.C =1
     dlib.train_simple_object_detector(training_xml_path, myDetector2, options)
 
     
@@ -108,7 +108,7 @@ def train_object_detector(faces_folder,myTraining,myTesting,myDetector,myDetecto
     # Now let's use the detector as you would in a normal application.  First we
     # will load it from disk.
     detector = dlib.simple_object_detector(myDetector)
-    detector2= dlib.fhog_object_detector(myDetector2) 
+    detector2= dlib.simple_object_detector(myDetector2) 
     # We can look at the HOG filter we learned.  It should look like a face.  Neat!
     ###win_det = dlib.image_window()
     ###win_det.set_image(detector)
@@ -133,6 +133,7 @@ def train_object_detector(faces_folder,myTraining,myTesting,myDetector,myDetecto
         cv2.imshow("myImage",clone)         
         cv2.waitKey(0)
         
+        print("Number of faces detected: {}".format(len(detshog)))
         for k, d in enumerate(detshog):
             print("Detection {}: Left: {} Top: {} Right: {} Bottom: {}".format(
                 k, d.left(), d.top(), d.right(), d.bottom()))
@@ -145,51 +146,51 @@ def train_object_detector(faces_folder,myTraining,myTesting,myDetector,myDetecto
         #win.add_overlay(dets)
         #dlib.hit_enter_to_continue()
     
-    # Next, suppose you have trained multiple detectors and you want to run them
-    # efficiently as a group.  You can do this as follows:
-    Detector1 = dlib.fhog_object_detector(detector)
-    # In this example we load detector.svm again since it's the only one we have on
-    # hand. But in general it would be a different detector.
-    Detector2 = dlib.fhog_object_detector(detector2) 
-    # make a list of all the detectors you wan to run.  Here we have 2, but you
-    # could have any number.
-    detectors = [Detector1, Detector2]
-    #image = dlib.load_rgb_image(faces_folder + '/2008_002506.jpg')
-    image = cv2.imread(faces_folder + '/2008_002506.jpg')
-    [boxes, confidences, detector_idxs] = dlib.fhog_object_detector.run_multiple(detectors, image, upsample_num_times=1, adjust_threshold=0.0)
-    for i in range(len(boxes)):
-        print("detector {} found box {} with confidence {}.".format(detector_idxs[i], boxes[i], confidences[i]))
-    
-    # Finally, note that you don't have to use the XML based input to
-    # train_simple_object_detector().  If you have already loaded your training
-    # images and bounding boxes for the objects then you can call it as shown
-    # below.
-    
-    # You just need to put your images into a list.
-    images = [dlib.load_rgb_image(faces_folder + '/2008_002506.jpg'),
-              dlib.load_rgb_image(faces_folder + '/2009_004587.jpg')]
-    # Then for each image you make a list of rectangles which give the pixel
-    # locations of the edges of the boxes.
-    boxes_img1 = ([dlib.rectangle(left=329, top=78, right=437, bottom=186),
-                   dlib.rectangle(left=224, top=95, right=314, bottom=185),
-                   dlib.rectangle(left=125, top=65, right=214, bottom=155)])
-    boxes_img2 = ([dlib.rectangle(left=154, top=46, right=228, bottom=121),
-                   dlib.rectangle(left=266, top=280, right=328, bottom=342)])
-    # And then you aggregate those lists of boxes into one big list and then call
-    # train_simple_object_detector().
-    boxes = [boxes_img1, boxes_img2]
-    
-    detector2 = dlib.train_simple_object_detector(images, boxes, options)
-    # We could save this detector to disk by uncommenting the following.
-    #detector2.save('detector2.svm')
-    
-    # Now let's look at its HOG filter!
-   #### win_det.set_image(detector2)
-    ####dlib.hit_enter_to_continue()
-    
-    # Note that you don't have to use the XML based input to
-    # test_simple_object_detector().  If you have already loaded your training
-    # images and bounding boxes for the objects then you can call it as shown
-    # below.
-    print("\nTraining accuracy: {}".format(
-        dlib.test_simple_object_detector(images, boxes, detector2)))
+#    # Next, suppose you have trained multiple detectors and you want to run them
+#    # efficiently as a group.  You can do this as follows:
+#    Detector1 = dlib.fhog_object_detector(detector)
+#    # In this example we load detector.svm again since it's the only one we have on
+#    # hand. But in general it would be a different detector.
+#    Detector2 = dlib.fhog_object_detector(detector2) 
+#    # make a list of all the detectors you wan to run.  Here we have 2, but you
+#    # could have any number.
+#    detectors = [Detector1, Detector2]
+#    #image = dlib.load_rgb_image(faces_folder + '/2008_002506.jpg')
+#    image = cv2.imread(faces_folder + '/2008_002506.jpg')
+#    [boxes, confidences, detector_idxs] = dlib.fhog_object_detector.run_multiple(detectors, image, upsample_num_times=1, adjust_threshold=0.0)
+#    for i in range(len(boxes)):
+#        print("detector {} found box {} with confidence {}.".format(detector_idxs[i], boxes[i], confidences[i]))
+#    
+#    # Finally, note that you don't have to use the XML based input to
+#    # train_simple_object_detector().  If you have already loaded your training
+#    # images and bounding boxes for the objects then you can call it as shown
+#    # below.
+#    
+#    # You just need to put your images into a list.
+#    images = [dlib.load_rgb_image(faces_folder + '/2008_002506.jpg'),
+#              dlib.load_rgb_image(faces_folder + '/2009_004587.jpg')]
+#    # Then for each image you make a list of rectangles which give the pixel
+#    # locations of the edges of the boxes.
+#    boxes_img1 = ([dlib.rectangle(left=329, top=78, right=437, bottom=186),
+#                   dlib.rectangle(left=224, top=95, right=314, bottom=185),
+#                   dlib.rectangle(left=125, top=65, right=214, bottom=155)])
+#    boxes_img2 = ([dlib.rectangle(left=154, top=46, right=228, bottom=121),
+#                   dlib.rectangle(left=266, top=280, right=328, bottom=342)])
+#    # And then you aggregate those lists of boxes into one big list and then call
+#    # train_simple_object_detector().
+#    boxes = [boxes_img1, boxes_img2]
+#    
+#    detector2 = dlib.train_simple_object_detector(images, boxes, options)
+#    # We could save this detector to disk by uncommenting the following.
+#    #detector2.save('detector2.svm')
+#    
+#    # Now let's look at its HOG filter!
+#   #### win_det.set_image(detector2)
+#    ####dlib.hit_enter_to_continue()
+#    
+#    # Note that you don't have to use the XML based input to
+#    # test_simple_object_detector().  If you have already loaded your training
+#    # images and bounding boxes for the objects then you can call it as shown
+#    # below.
+#    print("\nTraining accuracy: {}".format(
+#        dlib.test_simple_object_detector(images, boxes, detector2)))
