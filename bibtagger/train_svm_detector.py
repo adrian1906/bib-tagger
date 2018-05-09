@@ -41,4 +41,25 @@ def train_detector(FolderName_Class, Annotation_Path,DetectorOutputFolder):
     print("[INFO] Saving SVM Detector")
     mySVM_Detector.save(DetectorOutputFolder)
     
+def train_detector_given_image_list(myImageList, Annotation_Path,DetectorOutputFolder):
+    # Set Default Options
+    options=dlib.simple_object_detector_training_options()
+    images=[]
+    imagename=[]
+    boxes=[]
+    annotations=[]
+    for imagefilename in myImageList:
+
+        images.append(cv2.imread(imagefilename))
+        imagename.append(name)
+        annotations = loadmat(os.path.join(Annotation_Path,name +".xml"))
+        bb=[dlib.rectangle(left=x,top=y,right=w,bottom=h)  for (y,h,x,w) in annotations]
+        boxes.append(bb)
     
+    # Train the object detector
+    print("[INFO] Training the Support Vector Machine Deector")
+    mySVM_Detector=dlib.train_simple_object_detector(images,boxes,options)
+    
+    # Save the detector
+    print("[INFO] Saving SVM Detector")
+    mySVM_Detector.save(DetectorOutputFolder)    
