@@ -1,12 +1,12 @@
 
 import Hood_ObjectDetectModule as o
 
-myTraining="training.xml"
+myTraining="bibdataset_reduced_more.xml"
 
-myTesting ="testing.xml"
+myTesting ="bibdataset_reduced_more.xml"
 
-faces_folder ="E:\\700_Tutorials\\dlib\\examples\\faces"
-
+#faces_folder ="E:\\700_Tutorials\\dlib\\examples\\faces"
+faces_folder = "D:\\2016_USATF_Sprint_TrainingDataset"
 myDetector="myDetector.svm"
 myHOGDetector="myHOGDetector.svm"
 

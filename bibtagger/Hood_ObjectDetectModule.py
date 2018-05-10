@@ -85,7 +85,7 @@ def train_object_detector(faces_folder,myTraining,myTesting,myDetector,myDetecto
     # dlib.
     dlib.train_simple_object_detector(training_xml_path, myDetector, options)
     options.C =1
-    dlib.train_simple_object_detector(training_xml_path, myDetector2, options)
+    #dlib.train_simple_object_detector(training_xml_path, myDetector2, options)
 
     
     
@@ -108,7 +108,7 @@ def train_object_detector(faces_folder,myTraining,myTesting,myDetector,myDetecto
     # Now let's use the detector as you would in a normal application.  First we
     # will load it from disk.
     detector = dlib.simple_object_detector(myDetector)
-    detector2= dlib.simple_object_detector(myDetector2) 
+    ##detector2= dlib.simple_object_detector(myDetector2) 
     # We can look at the HOG filter we learned.  It should look like a face.  Neat!
     ###win_det = dlib.image_window()
     ###win_det.set_image(detector)
@@ -122,10 +122,10 @@ def train_object_detector(faces_folder,myTraining,myTesting,myDetector,myDetecto
         #img = dlib.load_rgb_image(f)
         img = cv2.imread(f)
         dets = detector(img)
-        detshog=detector2(img)
+        ##detshog=detector2(img)
         print("Number of faces detected: {}".format(len(dets)))
         clone=img.copy()
-        clonehog=img.copy()
+        ##clonehog=img.copy()
         for k, d in enumerate(dets):
             print("Detection {}: Left: {} Top: {} Right: {} Bottom: {}".format(
                 k, d.left(), d.top(), d.right(), d.bottom()))
@@ -133,13 +133,13 @@ def train_object_detector(faces_folder,myTraining,myTesting,myDetector,myDetecto
         cv2.imshow("myImage",clone)         
         cv2.waitKey(0)
         
-        print("Number of faces detected: {}".format(len(detshog)))
-        for k, d in enumerate(detshog):
-            print("Detection {}: Left: {} Top: {} Right: {} Bottom: {}".format(
-                k, d.left(), d.top(), d.right(), d.bottom()))
-            cv2.rectangle(clonehog,(d.left(),d.top()),(d.right(),d.bottom()),(0,255,0),2)
-        cv2.imshow("myImage (USING HOG)",clonehog)         
-        cv2.waitKey(0)        
+#        print("Number of faces detected: {}".format(len(detshog)))
+#        for k, d in enumerate(detshog):
+#            print("Detection {}: Left: {} Top: {} Right: {} Bottom: {}".format(
+#                k, d.left(), d.top(), d.right(), d.bottom()))
+#            cv2.rectangle(clonehog,(d.left(),d.top()),(d.right(),d.bottom()),(0,255,0),2)
+#        cv2.imshow("myImage (USING HOG)",clonehog)         
+#        cv2.waitKey(0)        
         
         #win.clear_overlay()
         #win.set_image(img)
